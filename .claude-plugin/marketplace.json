@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "tersely",
+  "description": "Terse output mode for Claude Code with profiles, cost tracking, MCP server, and security-aware auto-pause.",
+  "owner": {
+    "name": "Siri Yarlagadda",
+    "url": "https://github.com/siri1410"
+  },
+  "plugins": [
+    {
+      "name": "tersely",
+      "description": "Profile-driven terse output. Tracks tokens saved, pauses on security-sensitive turns, ships with reusable workflows and an MCP server.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

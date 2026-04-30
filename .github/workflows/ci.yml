@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Syntax check hooks
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: MCP server install + smoke
+        run: |
+          cd mcp
+          npm install --no-audit --no-fund
+          node -e "import('./src/server.js').catch(e => { if (e.message.includes('stdio')) process.exit(0); throw e; })"
+        shell: bash
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify no network imports in hooks
+        run: |
+          if grep -RE "require\(['\"](http|https|net|dns|tls)['\"]\)|from ['\"]node:?(http|https|net|dns|tls)['\"]" hooks/ mcp/src/; then
+            echo "::error::Network module imports are not allowed in hooks/ or mcp/src/"
+            exit 1
+          fi
+
+      - name: Verify no fetch usage
+        run: |
+          if grep -RE "\bfetch\s*\(" hooks/ mcp/src/; then
+            echo "::error::fetch() is not allowed in hooks/ or mcp/src/"
+            exit 1
+          fi

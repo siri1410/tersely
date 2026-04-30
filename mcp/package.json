@@ -1,0 +1,25 @@
+{
+  "name": "@tersely/mcp",
+  "version": "0.1.0",
+  "description": "MCP server for tersely — compress text, count tokens, estimate costs, read stats",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "tersely-mcp": "src/server.js"
+  },
+  "main": "src/server.js",
+  "files": [
+    "src/"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siri1410/tersely.git",
+    "directory": "mcp"
+  }
+}

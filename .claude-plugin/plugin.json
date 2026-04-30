@@ -1,0 +1,53 @@
+{
+  "name": "tersely",
+  "version": "0.1.0",
+  "description": "Terse output mode for Claude Code. Profile-aware, cost-tracked, security-paused. Cuts assistant output tokens without dropping technical substance.",
+  "author": {
+    "name": "Siri Yarlagadda",
+    "url": "https://github.com/siri1410"
+  },
+  "license": "MIT",
+  "keywords": ["claude-code", "tokens", "cost", "productivity", "compression", "mcp"],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.js\"",
+            "timeout": 5,
+            "statusMessage": "tersely: loading profile"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/user-prompt-submit.js\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/stop.js\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "mcpServers": {
+    "tersely": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/src/server.js"]
+    }
+  }
+}
