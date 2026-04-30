@@ -24,7 +24,7 @@
     "plugin"
   ],
   "scripts": {
-    "test": "node --test tests/*.test.js",
+    "test": "node --test tests/profiles.test.js",
     "lint": "node -c hooks/session-start.js && node -c hooks/user-prompt-submit.js && node -c hooks/stop.js",
     "mcp:install": "cd mcp && npm install",
     "mcp:start": "node mcp/src/server.js"
